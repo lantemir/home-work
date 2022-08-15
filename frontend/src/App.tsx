@@ -9,14 +9,16 @@ import{
 import './App.css';
 import './css/bootstrap/bootstrap.min.css';
 import {Home} from './pages/Home';
+import {Weather} from './pages/Weather';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />}>
+        <Route path='/' element={<Home />}></Route>
+        <Route path='/weather' element= {<Weather/>}></Route>
 
-        </Route>
+        
       </Routes>
     </BrowserRouter>
   );

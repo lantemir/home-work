@@ -49,4 +49,51 @@ class TextModelAdmin(admin.ModelAdmin):
         'created_datetime',
     ]
 
+
+
+class WeatherModelAdmin(admin.ModelAdmin):
+    """WeatherMode"""
+
+    list_display = (
+        'city_name',
+        'city_url',
+        'weather_info',
+    )
+
+    list_display_links = (
+        'city_name',     
+    )
+
+    list_editable = (        
+        'city_url',
+    )
+
+    list_filter = (
+        'city_name',
+        'city_url',
+        'weather_info',      
+    )
+
+    fieldsets = (
+        (
+            'Основное', {
+                "fields": (
+                   'city_name',
+                   'city_url',
+                   'weather_info',                     
+                )
+            }
+        ),
+    )
+
+    search_fields = [
+        'city_name',
+        'city_url',
+        'weather_info',        
+    ]
+
+
+
+
+admin.site.register(models.WeatherModel, WeatherModelAdmin)
 admin.site.register(models.TextModel, TextModelAdmin)

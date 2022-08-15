@@ -7,3 +7,9 @@ class TextModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TextModel
         fields = "__all__"
+
+
+class WeatherModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.WeatherModel
+        fields = "__all__"

@@ -1,3 +1,6 @@
+from cgitb import html
+from statistics import mode
+from urllib import response
 from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
@@ -7,8 +10,11 @@ from django_app import models
 from django.core.paginator import Paginator
 from django_app import serializers
 
-from django.core.mail import send_mail # для отправки писем
 
+
+from django.core.mail import send_mail # для отправки писем
+import requests
+from bs4 import BeautifulSoup
 
 # Create your views here.
 
@@ -55,3 +61,64 @@ def chat(request, sms_id = None):
     except Exception as error:
         print(error)
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(http_method_names=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])
+def weather(request, weather_id = None):
+    try:
+        if weather_id:        
+            if request.method == "GET":  
+                city_by_id = models.WeatherModel.objects.get(pk = weather_id)              
+
+                serialized_weather_by_id = serializers.WeatherModelSerializer(instance=city_by_id, many=False).data
+
+                url = serialized_weather_by_id["city_url"]
+
+                city = serialized_weather_by_id["city_name"]
+
+                headers = {
+                'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246"}
+
+                response = requests.get(url=url, headers=headers)
+
+                soup = BeautifulSoup(response.content, 'html.parser')
+
+             
+                data1 = soup.find_all("span", attrs={"class": "unit unit_temperature_c"})[0]
+
+                
+
+                sign = str(data1).split('sign">')[1].split('</span>')[0].strip()
+
+                temp = str(data1).split('</span>')[1].split('<span')[0].strip()               
+
+                print("data1: ")
+                print(data1)
+
+                print("sign: ")
+                print(sign)
+
+                print("temp: ")
+                print(temp)
+
+
+
+                return Response( {"sign": sign, "temp": temp, "city":city, "status": status.HTTP_200_OK})
+
+        else: 
+            if request.method == "GET":             
+                obj_list = models.WeatherModel.objects.all()
+                serialized_obj_list = serializers.WeatherModelSerializer(instance=obj_list, many=True).data
+
+                return Response(data={"list": serialized_obj_list, "x-total-count": len(obj_list)}, status=status.HTTP_200_OK)        
+
+            
+    except Exception as error:
+        print(error)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+#парсинг
+# https://www.youtube.com/watch?v=kZ8f6PqW65o&list=PLFH0jFGRecS0btzEqlp6f4Ua8FwJYkH1m&index=32&t=10499s
+# https://github.com/bogdandrienko/PyE-212-2/blob/main/projects/3/app_teacher/parser_html_data.py

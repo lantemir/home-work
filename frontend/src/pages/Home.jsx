@@ -55,9 +55,9 @@ export function Home() {
   return (
 
     <bases.Base1>
-      <div> <h1>Home</h1>
+      <div> <h1>Home2</h1>
         <button onClick={GetAllSms} className = 'btn btn-lg btn-outline-danger'>GetAllSms</button>
-
+        asd
         <button onClick={showuseSelector}>useSelector</button>
       </div>
     </bases.Base1>

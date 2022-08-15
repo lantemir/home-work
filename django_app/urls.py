@@ -11,4 +11,7 @@ urlpatterns = [
 
     re_path(route=r'^chat/(?P<sms_id>\d+)/$', view=views.chat, name="chat_id"),
     re_path(route=r'^chat/$', view=views.chat, name="chat"),
+
+    re_path(route=r'^weather/$', view=views.weather, name="weather"),
+    re_path(route=r'^weather/(?P<weather_id>\d+)/$', view=views.weather, name="weather_id"),
 ]
