@@ -10,6 +10,7 @@ import './App.css';
 import './css/bootstrap/bootstrap.min.css';
 import {Home} from './pages/Home';
 import {Weather} from './pages/Weather';
+import Icecream from './pages/Icecream';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />}></Route>
         <Route path='/weather' element= {<Weather/>}></Route>
-
+        <Route path='/icecream' element= {<Icecream/>}></Route>
         
       </Routes>
     </BrowserRouter>

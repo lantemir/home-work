@@ -94,6 +94,160 @@ class WeatherModelAdmin(admin.ModelAdmin):
 
 
 
+class IcecreamModelAdmin(admin.ModelAdmin):
+    """IcecreamModel"""
+
+    list_display = (
+        'title',
+        'description', 
+        
+     
+    )
+    filter_horizontal = ('category_id',) # только для полей флрмата many to many fields
+
+    list_display_links = (
+        'title',     
+    )
+
+    list_editable = (        
+        'description',       
+    )
+
+    list_filter = (
+        'title',
+        'description',       
+    )
+
+    fieldsets = (
+        (
+            'Основное', {
+                "fields": (
+                   'title',
+                   'description',   
+                   'category_id',               
+                )
+            }
+        ),
+    )
+
+    search_fields = [
+        'title',
+        'description',          
+    ]
+
+
+class IcecreamCategoryModelAdmin(admin.ModelAdmin):
+    """IcecreamCategoryModel"""
+
+    list_display = (
+        'title', 
+    )
+
+    list_display_links = (
+         
+    )
+
+
+    list_filter = (
+         
+    )
+
+    fieldsets = (
+        (
+            'Основное', {
+                "fields": (
+                   'title',                               
+                )
+            }
+        ),
+    )
+
+
+
+class CommentModelAdmin(admin.ModelAdmin):
+    """CommentModel"""
+
+    list_display = (
+        'comment_text',
+        'datetime_field',
+        'icecream_id',
+    )
+
+    list_display_links = (
+          
+    )
+
+    list_editable = (        
+        
+    )
+
+    list_filter = (
+        'datetime_field',         
+    )
+
+    fieldsets = (
+        (
+            'Основное', {
+                "fields": (
+                   'comment_text',                  
+                   'icecream_id',                     
+                )
+            }
+        ),
+    )
+
+    search_fields = [
+        'comment_text',             
+    ]
+
+
+class LikeModelAdmin(admin.ModelAdmin):
+    """LikeModel"""
+
+    list_display = (
+        'user_id',
+        'icecream_id',        
+    )
+
+    list_display_links = (
+          
+    )
+
+    list_editable = (        
+        
+    )
+
+    list_filter = (
+              
+    )
+
+    fieldsets = (
+        (
+            'Основное', {
+                "fields": (
+                   'user_id',
+                   'icecream_id',                     
+                )
+            }
+        ),
+    )
+
+    search_fields = [
+                  
+    ]
+
+
+
+
+   
+
+
+
 
 admin.site.register(models.WeatherModel, WeatherModelAdmin)
 admin.site.register(models.TextModel, TextModelAdmin)
+admin.site.register(models.Icecream, IcecreamModelAdmin)
+admin.site.register(models.IcecreamCategory, IcecreamCategoryModelAdmin)
+admin.site.register(models.CommentForIcecream, CommentModelAdmin)
+
+admin.site.register(models.LikeforIcecream, LikeModelAdmin)

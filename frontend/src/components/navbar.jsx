@@ -19,6 +19,9 @@ export function Navbar1() {
             <NavLink to="/weather" className="nav-link nav-custom2" >Погода</NavLink>
           </li>
           <li className="nav-item">
+            <NavLink to="/icecream" className="nav-link nav-custom2" >Мороженное</NavLink>
+          </li>
+          <li className="nav-item">
             <a className="nav-link" href="#">Pricing</a>
           </li>
           <li className="nav-item">

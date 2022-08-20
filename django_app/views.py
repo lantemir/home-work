@@ -119,6 +119,23 @@ def weather(request, weather_id = None):
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
+@api_view(http_method_names=["GET", "POST"])
+def icecream(request):
+    try:
+
+        if request.method == "GET":             
+            obj_list = models.Icecream.objects.all()
+            serialized_obj_list = serializers.IceCreamModelSerializer(instance=obj_list, many=True).data
+
+            return Response(data={"list": serialized_obj_list, "x-total-count": len(serialized_obj_list)}, status=status.HTTP_200_OK)        
+
+            
+    except Exception as error:
+        print(error)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 #парсинг
 # https://www.youtube.com/watch?v=kZ8f6PqW65o&list=PLFH0jFGRecS0btzEqlp6f4Ua8FwJYkH1m&index=32&t=10499s
 # https://github.com/bogdandrienko/PyE-212-2/blob/main/projects/3/app_teacher/parser_html_data.py
