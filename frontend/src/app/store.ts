@@ -3,9 +3,11 @@ import { combineReducers } from "redux";
 import thunk from "redux-thunk";
 
 import { GetAllMessageReducer } from '../pages/Home';
+import icecreamReducer from './redux/icecream-reducer';
 
 const globalReducer = combineReducers({
   GetAllMessage: GetAllMessageReducer,
+  IcecreamR: icecreamReducer,
 });
 
 const initialState = {

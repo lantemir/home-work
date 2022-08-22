@@ -1,0 +1,44 @@
+.test{
+    color: red;
+}
+
+.redBorder{
+    border: 1px solid red
+}
+
+.wrapper{
+    display: flex;  
+    flex-wrap: wrap;
+    width: 80%;
+    margin: auto;
+}
+.h1{
+    display: flex;
+    width: 100%;
+    border: 1px solid red;
+    justify-content: center;
+    
+}
+.flexContainer{    
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.blockInner{
+    display: flex;
+    width: 30%;
+    border: 1px solid green;
+    margin: 20px 0px;
+
+}
+
+
+
+
+
+
+/* https://www.youtube.com/watch?v=mIZDZIqdR7Y */

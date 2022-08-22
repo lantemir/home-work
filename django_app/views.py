@@ -124,11 +124,20 @@ def weather(request, weather_id = None):
 def icecream(request):
     try:
 
-        if request.method == "GET":             
-            obj_list = models.Icecream.objects.all()
+        if request.method == "GET":  
+
+            currentPage = int(request.GET.get("currentPage", 1))
+            pageSize = int(request.GET.get("pageSize", 4))
+
+            obj_list = models.Icecream.objects.all()           
             serialized_obj_list = serializers.IceCreamModelSerializer(instance=obj_list, many=True).data
 
-            return Response(data={"list": serialized_obj_list, "x-total-count": len(serialized_obj_list)}, status=status.HTTP_200_OK)        
+            paginator_obj = Paginator(serialized_obj_list, pageSize)
+
+            currentPage = paginator_obj.get_page(currentPage).object_list
+
+
+            return Response(data={"list": currentPage, "x_total_count": len(obj_list) }, status=status.HTTP_200_OK)        
 
             
     except Exception as error:
