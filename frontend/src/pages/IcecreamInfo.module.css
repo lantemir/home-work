@@ -1,0 +1,23 @@
+.wrapper{
+    display: flex;  
+    flex-wrap: wrap;
+    width: 80%;
+    margin: auto;
+}
+.h1{
+    display: flex;
+    width: 100%;
+    border: 1px solid red;
+    justify-content: center;
+    
+    
+}
+.redBorder{
+    border: 1px solid red
+}
+
+.paginator{
+    display: flex;
+    width: 100%;
+    border: 1px solid red
+}

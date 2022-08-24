@@ -7,6 +7,9 @@ import { requestIcecreams } from '../app/redux/icecream-reducer';
 
 import { useDispatch, useSelector } from "react-redux";
 
+import IcecreamComment from './IcecreamComment';
+import { Link } from 'react-router-dom';
+
 
 const Icecream = () => {
 
@@ -79,13 +82,23 @@ const Icecream = () => {
           <div key={item.id} className={s.blockInner}  >
 
             <div className="card-body">
-              <h5 className={s.test}>{item.title}</h5>
+              <Link to={`/icecream/${item.id}`}> <h5 className={s.test}>{item.title}</h5> </Link>
               <p className="card-text">{item.description}</p>
-              <ul>
+
+                {/* <IcecreamComment icecream_id = {item.id} /> */}
+                {/* <IcecreamComment comments = {item.comments} /> */}
+              
+              {/* <ul> */}
                 {item.comments.map(item => (
                   <li key={item.id}>{item.comment_text}</li>
+                  // <li key={item.id}> <IcecreamComment comment_text = {item.comment_text} /> </li>                  
                 ))}
-              </ul>
+
+
+                
+
+                
+              {/* </ul> */}
               <h3>likes: {item.likes.likeCount}</h3>
             </div>
           </div>

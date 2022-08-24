@@ -121,23 +121,58 @@ def weather(request, weather_id = None):
 
 
 @api_view(http_method_names=["GET", "POST"])
-def icecream(request):
+def icecream(request, icecream_id=None):
     try:
+        if icecream_id:
+            if request.method == "GET":  
 
-        if request.method == "GET":  
+                # print("icecream_id:  ")
+                # print(icecream_id)
+                
+                currentPage = int(request.GET.get("currentPage", 1))
+                pageSize = int(request.GET.get("pageSize", 4))
+                iceCreamInfo = models.Icecream.objects.get(id = icecream_id )
+                icecream_obj = serializers.IceCreamModelSerializer(instance=iceCreamInfo, many=False).data
 
-            currentPage = int(request.GET.get("currentPage", 1))
-            pageSize = int(request.GET.get("pageSize", 4))
+                # print('icecream_obj: ')
+                # print(icecream_obj)
 
-            obj_list = models.Icecream.objects.all()           
-            serialized_obj_list = serializers.IceCreamModelSerializer(instance=obj_list, many=True).data
+                count = models.CommentForIcecream.objects.filter(icecream_id = icecream_id).count()
+                commentget = models.CommentForIcecream.objects.filter(icecream_id = int(icecream_id))
+                
+               
 
-            paginator_obj = Paginator(serialized_obj_list, pageSize)
+                # print('obj_list: ')
+                # print(obj_list)
 
-            currentPage = paginator_obj.get_page(currentPage).object_list
+                comment_serialized_obj_list = serializers.CommentForIcecreamModelSerializer(instance=commentget, many=True).data
 
 
-            return Response(data={"list": currentPage, "x_total_count": len(obj_list) }, status=status.HTTP_200_OK)        
+                # print('serialized_obj_list: ')
+                # print(serialized_obj_list)
+
+
+                paginator_obj = Paginator(comment_serialized_obj_list, pageSize)
+                current_page_comment = paginator_obj.get_page(currentPage).object_list
+
+                return Response(data={ "x_total_count_comment": count, "icecream_obj":icecream_obj, "comment":current_page_comment }, status=status.HTTP_200_OK)
+
+
+        else: 
+            if request.method == "GET":  
+
+                currentPage = int(request.GET.get("currentPage", 1))
+                pageSize = int(request.GET.get("pageSize", 4))
+
+                obj_list = models.Icecream.objects.all()           
+                serialized_obj_list = serializers.IceCreamModelSerializer(instance=obj_list, many=True).data
+
+                paginator_obj = Paginator(serialized_obj_list, pageSize)
+
+                currentPage = paginator_obj.get_page(currentPage).object_list
+
+
+                return Response(data={"list": currentPage, "x_total_count": len(obj_list) }, status=status.HTTP_200_OK)        
 
             
     except Exception as error:
@@ -145,6 +180,57 @@ def icecream(request):
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
+
+
 #парсинг
 # https://www.youtube.com/watch?v=kZ8f6PqW65o&list=PLFH0jFGRecS0btzEqlp6f4Ua8FwJYkH1m&index=32&t=10499s
 # https://github.com/bogdandrienko/PyE-212-2/blob/main/projects/3/app_teacher/parser_html_data.py
+
+@api_view(http_method_names=["GET", "POST"])
+def comment_icecream(request, icecream_id=None):
+    try:
+        if icecream_id:
+            if request.method == "GET":  
+
+                print("icecream_id:  ")
+                print(icecream_id)
+                
+                currentPage = int(request.GET.get("currentPage", 1))
+                pageSize = int(request.GET.get("pageSize", 4))
+
+                count = models.CommentForIcecream.objects.all()
+                obj_list = models.CommentForIcecream.objects.filter(icecream_id = int(icecream_id))
+
+                serialized_obj_list = serializers.CommentForIcecreamModelSerializer(instance=obj_list, many=True).data
+
+
+                print("serialized_obj_list:  ")
+                print(serialized_obj_list)
+
+                paginator_obj = Paginator(serialized_obj_list, pageSize)
+                current_page = paginator_obj.get_page(currentPage).object_list
+
+                return Response(data={"list": current_page, "x_total_count": count}, status=status.HTTP_200_OK)
+
+
+        else: 
+            pass 
+            # if request.method == "GET":  
+
+            #     currentPage = int(request.GET.get("currentPage", 1))
+            #     pageSize = int(request.GET.get("pageSize", 4))
+
+            #     obj_list = models.CommentForIcecream.objects.all()
+            #     serialized_obj_list = serializers.CommentForIcecreamModelSerializer(instance=obj_list, many=True).data
+
+            #     paginator_obj = Paginator(serialized_obj_list, pageSize)
+            #     current_page = paginator_obj.get_page(currentPage).object_list
+
+            #     return Response(data={"list": current_page, "x_total_count": len(obj_list) }, status=status.HTTP_200_OK)
+
+    except Exception as error:
+        print(error)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+

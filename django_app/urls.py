@@ -15,5 +15,12 @@ urlpatterns = [
     re_path(route=r'^weather/$', view=views.weather, name="weather"),
     re_path(route=r'^weather/(?P<weather_id>\d+)/$', view=views.weather, name="weather_id"),
 
+    re_path(route=r'^icecream/(?P<icecream_id>\d+)/$', view=views.icecream, ),
     re_path(route=r'^icecream/$', view=views.icecream, ),
+    
+
+    re_path(route=r'^commenticecream/(?P<icecream_id>\d+)/$', view=views.comment_icecream),
 ]
+
+
+

@@ -45,6 +45,8 @@ class IcecreamCategoryModelSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
+
 class IceCreamModelSerializer(serializers.ModelSerializer):
     category_id = serializers.SerializerMethodField(read_only=True)
 
@@ -76,7 +78,7 @@ class IceCreamModelSerializer(serializers.ModelSerializer):
     #    return models.CommentForIcecream.objects.get()
 
         obj_list = models.CommentForIcecream.objects.filter(icecream_id = obj.id)
-        return CommentForIcecreamModelSerializer(instance=obj_list, many=True).data
+        return CommentForIcecreamModelSerializer(instance=obj_list, many=True).data[:3]
 
     def get_likes(self, obj):
 

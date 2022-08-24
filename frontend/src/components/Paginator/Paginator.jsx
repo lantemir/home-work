@@ -41,7 +41,7 @@ let Paginator = ({totalIcereamsCount, pageSize, currentPage, onPageChanged, port
                         })}
                 {portionCount > portionNumber &&
                     <button onClick={() =>{setportionNumber(portionNumber + 1 )}}>NEXT</button> }
-                    Pag
+                    
     </div>
 }
 
