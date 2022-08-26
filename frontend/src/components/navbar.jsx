@@ -22,6 +22,12 @@ export function Navbar1() {
             <NavLink to="/icecream" className="nav-link nav-custom2" >Мороженное</NavLink>
           </li>
           <li className="nav-item">
+            <NavLink to="/timer" className="nav-link nav-custom2" >Таймер</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/calculator" className="nav-link nav-custom2" >Калькулятор</NavLink>
+          </li>
+          <li className="nav-item">
             <a className="nav-link" href="#">Pricing</a>
           </li>
           <li className="nav-item">

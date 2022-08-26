@@ -12,6 +12,8 @@ import {Home} from './pages/Home';
 import {Weather} from './pages/Weather';
 import Icecream from './pages/Icecream';
 import IcecreamInfo from './pages/IcecreamInfo';
+import Timer from './pages/Timer';
+import Calculator from './pages/Calculator';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path='/weather' element= {<Weather/>}></Route>
         <Route path='/icecream' element= {<Icecream/>}></Route>
         <Route path='/icecream/:id' element={<IcecreamInfo/>}></Route>
+        <Route path='/timer' element={<Timer/>}></Route>
+        <Route path='/calculator' element={<Calculator/>}></Route>
         
       </Routes>
     </BrowserRouter>
