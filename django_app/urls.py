@@ -1,6 +1,6 @@
 
-from django.contrib import admin
-from django.urls import path, include, re_path
+
+from django.urls import path, re_path
 from django_app import views
 
 
@@ -20,6 +20,8 @@ urlpatterns = [
     
 
     re_path(route=r'^commenticecream/(?P<icecream_id>\d+)/$', view=views.comment_icecream),
+
+    re_path(route=r'^jsonplaceholder/$', view=views.jsonplaceholder),
 ]
 
 

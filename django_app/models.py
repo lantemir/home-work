@@ -1,5 +1,5 @@
 from statistics import mode
-from tkinter import CASCADE
+
 from turtle import title
 from unicodedata import category
 from django.utils import timezone

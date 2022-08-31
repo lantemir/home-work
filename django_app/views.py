@@ -1,4 +1,5 @@
 from cgitb import html
+from multiprocessing import context
 from statistics import mode
 from urllib import response
 from django.shortcuts import render
@@ -19,7 +20,8 @@ from bs4 import BeautifulSoup
 # Create your views here.
 
 def index(request):
-    return JsonResponse({"response": "Ok!"})
+    context={}
+    return render(request=request, template_name = 'build/index.html', context=context, status=status.HTTP_200_OK)
 
 def users(request):
     return JsonResponse({"response": "Ok!"})
@@ -233,4 +235,27 @@ def comment_icecream(request, icecream_id=None):
         print(error)
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+
+@api_view(http_method_names=["GET", "POST"])
+def jsonplaceholder(request):
+    try:
+        
+        if request.method == "POST":  
+
+            sendMessage = request.POST.get("sendMessage", "")
+            
+
+            print("sendMessage:  ")
+            print(sendMessage)
+
+
+            return Response(data={"result": sendMessage}, status=status.HTTP_200_OK)
+
+
+
+
+    except Exception as error:
+        print(error)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

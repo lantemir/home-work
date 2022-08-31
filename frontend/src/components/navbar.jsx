@@ -28,8 +28,9 @@ export function Navbar1() {
             <NavLink to="/calculator" className="nav-link nav-custom2" >Калькулятор</NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Pricing</a>
+            <NavLink to="/jsonplaceholder" className="nav-link nav-custom2" >Json Placeholder</NavLink>
           </li>
+        
           <li className="nav-item">
             <a className="nav-link disabled"  aria-disabled="true">Disabled</a>
           </li>
