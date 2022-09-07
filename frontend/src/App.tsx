@@ -15,6 +15,7 @@ import IcecreamInfo from './pages/IcecreamInfo';
 import Timer from './pages/Timer';
 import Calculator from './pages/Calculator';
 import Jsonplaceholder from './pages/Jsonplaceholder';
+import Mylistclass from './pages/Mylistclass'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path='/timer' element={<Timer/>}></Route>
         <Route path='/calculator' element={<Calculator/>}></Route>
         <Route path='/jsonplaceholder' element={<Jsonplaceholder/>}></Route>
+        <Route path='/mylist' element={<Mylistclass/>}></Route>
       </Routes>
     </BrowserRouter>
   );

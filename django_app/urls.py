@@ -3,9 +3,13 @@
 from django.urls import path, re_path
 from django_app import views
 
+from django_app.views import Mylist
+
 
 urlpatterns = [
     path('', views.index, name="index"),
+
+    
 
     re_path(route=r'^users/$', view=views.users, name="users"),
 
@@ -22,6 +26,14 @@ urlpatterns = [
     re_path(route=r'^commenticecream/(?P<icecream_id>\d+)/$', view=views.comment_icecream),
 
     re_path(route=r'^jsonplaceholder/$', view=views.jsonplaceholder),
+
+    path('registration/', views.registration),
+
+    path('mylistdj/<item_id>/',  Mylist.as_view()),
+    path('mylistdj/',  Mylist.as_view()),
+    
+
+    
 ]
 
 

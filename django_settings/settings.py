@@ -51,11 +51,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
+CORS_URLS_REGEX = r"^/api/.*$"
 
 # Application definition
 
 INSTALLED_APPS = [
-    "corsheaders",
+  
     "grappelli",
 
     'django.contrib.admin',
@@ -66,6 +67,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_app',
+    'corsheaders',
+
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +88,8 @@ MIDDLEWARE = [
 
     'whitenoise.middleware.WhiteNoiseMiddleware', # для heroku
 ]
+
+        # AUTH_USER_MODEL = 'django_app.UserExtend' переопределение юзера через класс в моделях
 
 ROOT_URLCONF = 'django_settings.urls'
 
@@ -152,7 +160,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'Etc/GMT-6'
+TIME_ZONE = 'Asia/Almaty'
 
 USE_I18N = True
 
@@ -165,19 +173,19 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
     # раскоментить при сборке на прод и делаем:  python manage.py collectstatic --noinput
-STATIC_ROOT = Path(BASE_DIR / 'static')  
+#STATIC_ROOT = Path(BASE_DIR / 'static')  
     # для heroky не забыть файл Procfile -> django_settings обратить внимание. Потом pip install gunicorn. Потом runtime.txt добавить файл. 
 
 
 STATICFILES_DIRS = [
     Path(BASE_DIR / 'static_external'),
-   # Path(BASE_DIR / 'static'),
+    Path(BASE_DIR / 'static'),
     Path(BASE_DIR / 'frontend/build/static'),
     Path(BASE_DIR / 'frontend/public/static'),
 ]
 
 # РАСКОМЕНТИТЬ при сборке на хероку не забыть: pip install whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = Path(BASE_DIR, 'static/media')

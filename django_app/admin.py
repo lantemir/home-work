@@ -238,6 +238,48 @@ class LikeModelAdmin(admin.ModelAdmin):
 
 
 
+class TaskModelAdmin(admin.ModelAdmin):
+    """TaskModel"""
+
+    list_display = (
+        'title',
+        'description',  
+        'author',  
+        'datetime_task',      
+    )
+
+    list_display_links = (
+          
+    )
+
+    list_editable = (        
+        'description',
+    )
+
+    list_filter = (
+        'author', 
+        'datetime_task',   
+    )
+
+    fieldsets = (
+        (
+            'Основное', {
+                "fields": (
+                   'title',
+                   'description',  
+                   'author',   
+                   
+                                           
+                )
+            }
+        ),
+    )
+
+    search_fields = [
+                  
+    ]
+
+
 
    
 
@@ -251,3 +293,8 @@ admin.site.register(models.IcecreamCategory, IcecreamCategoryModelAdmin)
 admin.site.register(models.CommentForIcecream, CommentModelAdmin)
 
 admin.site.register(models.LikeforIcecream, LikeModelAdmin)
+
+admin.site.register(models.Profile)
+admin.site.register(models.Task, TaskModelAdmin)
+# admin.site.register(models.UserExtend)
+

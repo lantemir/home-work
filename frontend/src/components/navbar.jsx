@@ -30,6 +30,9 @@ export function Navbar1() {
           <li className="nav-item">
             <NavLink to="/jsonplaceholder" className="nav-link nav-custom2" >Json Placeholder</NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="/mylist" className="nav-link nav-custom2" >mylist Class</NavLink>
+          </li>
         
           <li className="nav-item">
             <a className="nav-link disabled"  aria-disabled="true">Disabled</a>

@@ -1,21 +1,31 @@
-from cgitb import html
+# from cgitb import html
+
 from multiprocessing import context
-from statistics import mode
-from urllib import response
+import re
+
 from django.shortcuts import render
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from django_app import models
 from django.core.paginator import Paginator
 from django_app import serializers
 
+from django.contrib.auth.models import User, update_last_login
+
+
 
 
 from django.core.mail import send_mail # для отправки писем
 import requests
 from bs4 import BeautifulSoup
+
+
+# для классов
+from django.views import View
+from rest_framework.views import APIView
 
 # Create your views here.
 
@@ -259,3 +269,161 @@ def jsonplaceholder(request):
         print(error)
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@api_view(http_method_names=["GET", "POST"])
+@permission_classes([AllowAny])
+def registration(request):
+    if request.method == "POST":
+        email = request.data.get("email", None)
+        password = request.data.get("password", None)
+
+        print(f"\nGET {request.GET}")
+        print(f"POST {request.POST}")
+        print(f"data {request.data}")
+        print(f"FILES {request.FILES}\n")
+
+        print(email)
+        print(password)
+
+        if email and password:
+            if re.match(r"^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", password) and \
+                    re.match(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}", email):
+                User.objects.create_user(
+                    username=email,
+                    email=email,
+                    password=password
+                )
+
+                # {
+                #     "email": "admin@gmail.com",
+                #     "password": "adminA1#"
+                # }
+                pass
+                return Response(status=status.HTTP_201_CREATED)
+            else:
+                return Response(data={"ответ:": "Вы не прошли проверку регулярного выражения"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+
+
+class Mylist(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, format=None):
+
+        obj_list = models.Task.objects.all()
+        serialized_obj_list = serializers.TaskModelSerializer(instance=obj_list, many=True).data
+
+        obj_users = User.objects.all()
+        serialized_obj_users = serializers.UserModelSerializer(instance=obj_users, many=True).data
+
+        # currentPage = int(request.GET.get("currentPage", 1))
+        # pageSize = int(request.GET.get("pageSize", 4))
+
+        # obj_list = models.Icecream.objects.all()           
+        # serialized_obj_list = serializers.IceCreamModelSerializer(instance=obj_list, many=True).data
+
+        # paginator_obj = Paginator(serialized_obj_list, pageSize)
+
+        # currentPage = paginator_obj.get_page(currentPage).object_list
+
+
+
+        content = {
+            'status': 'request GET', 
+            'data': serialized_obj_list,
+            'users': serialized_obj_users,
+        }
+
+        return Response(content)
+
+
+    
+
+    def post(self, request, format=None):      
+
+        entry_selectedUserId = int(request.data.get("selectedUserId"))
+        entry_title = request.data.get("title")
+        entry_description = request.data.get("description")
+
+        if(entry_selectedUserId > 0):        
+            models.Task.objects.create(
+                author_id = entry_selectedUserId,
+                title = entry_title,
+                description = entry_description,
+            )  
+
+            obj_list = models.Task.objects.all()
+            serialized_obj_list = serializers.TaskModelSerializer(instance=obj_list, many=True).data     
+
+            content = {
+                'data': serialized_obj_list,
+                'status': status.HTTP_201_CREATED
+            }
+            return Response(content)
+        
+        else:
+            content = {
+                'response': 'Не выбрали автора',
+                'status': status.HTTP_400_BAD_REQUEST
+            }
+            return Response(content)
+        
+    
+    def delete(self, request, item_id = 0):
+       
+        task_id = item_id      
+       
+
+        models.Task.objects.get(id = task_id).delete()
+
+        obj_list = models.Task.objects.all()
+        serialized_obj_list = serializers.TaskModelSerializer(instance=obj_list, many=True).data
+        
+
+
+        content = {
+            'data': serialized_obj_list,
+            'status': status.HTTP_200_OK
+        }
+        return Response(content)
+
+
+
+    def put(self, request ):
+       
+
+        task_id = request.data.get("objIdForUpdate")
+        entry_selectedUserId = int(request.data.get("selectedUserId"))
+        entry_title = request.data.get("title")
+        entry_description = request.data.get("description")
+
+        task = models.Task.objects.get(id = task_id)
+
+        if task.title != entry_title:
+                task.title = entry_title
+
+        task.description = entry_description
+        task.author = User.objects.get(pk = entry_selectedUserId)
+           
+        task.save()
+
+
+
+        obj_list = models.Task.objects.all()
+        serialized_obj_list = serializers.TaskModelSerializer(instance=obj_list, many=True).data     
+
+        content = {
+            'data': serialized_obj_list,
+            'status': status.HTTP_201_CREATED
+        }
+        return Response(content)
+
+
+
+
+         

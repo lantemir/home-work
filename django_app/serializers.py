@@ -10,7 +10,8 @@ from django.contrib.auth.models import User
 class UserModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        # fields = "__all__"
+        fields = ['id', 'username', 'email']
 
 
 class TextModelSerializer(serializers.ModelSerializer):
@@ -88,8 +89,28 @@ class IceCreamModelSerializer(serializers.ModelSerializer):
 
 
 
+class TaskModelSerializer(serializers.ModelSerializer):
+    users = serializers.SerializerMethodField(read_only = True)
+    all_users = serializers.SerializerMethodField(read_only = True)
+    
 
+    class Meta:
+        model = models.Task
+        fields = "__all__"
 
+    def get_users(self, obj):
+
+     
+        obj_list = User.objects.filter(id=obj.author_id)
+        # obj_list = User.objects.all()
+
+        return UserModelSerializer(instance=obj_list, many=True).data
+
+    def get_all_users(self, obj):
+
+        obj_list = User.objects.all()
+
+        return UserModelSerializer(instance=obj_list, many=True).data
 
 
 
