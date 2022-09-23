@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+from telnetlib import LOGOUT
 
 import environ
 
@@ -51,13 +52,19 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
-CORS_URLS_REGEX = r"^/api/.*$"
+# CORS_URLS_REGEX = r"^/api/.*$"
 
 # Application definition
 
+LOGOUT_REDIRECT_URL = '/frontpage/'
+LOGIN_REDIRECT_URL = '/rooms/'
+LOGIN_URL = '/login/'
+
+
 INSTALLED_APPS = [
-  
-    "grappelli",
+    
+    
+    'grappelli',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -66,13 +73,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'channels',
     'django_app',
+    'room',
+
     'corsheaders',
 
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
 ]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -106,13 +119,23 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'django.template.context_processors.request',
+                # 'django.template.context_processors.request',
             ],
         },
     },
 ]
 
+
+
 WSGI_APPLICATION = 'django_settings.wsgi.application'
+ASGI_APPLICATION = 'django_settings.asgi.application'
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 
 # Database

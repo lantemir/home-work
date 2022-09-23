@@ -5,11 +5,13 @@ import thunk from "redux-thunk";
 import { GetAllMessageReducer } from '../pages/Home';
 import icecreamReducer from './redux/icecream-reducer';
 import commentIcecreamReducer from './redux/comment-icecream-reducer';
+import chatReducer from './redux/chat-reducer';
 
 const globalReducer = combineReducers({
   GetAllMessage: GetAllMessageReducer,
   IcecreamR: icecreamReducer,
   CommentIcecreamR: commentIcecreamReducer,
+  ChatR: chatReducer,
 });
 
 const initialState = {

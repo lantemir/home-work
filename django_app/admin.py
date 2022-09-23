@@ -297,4 +297,5 @@ admin.site.register(models.LikeforIcecream, LikeModelAdmin)
 admin.site.register(models.Profile)
 admin.site.register(models.Task, TaskModelAdmin)
 # admin.site.register(models.UserExtend)
+admin.site.register(models.Room)
 

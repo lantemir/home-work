@@ -15,7 +15,9 @@ import IcecreamInfo from './pages/IcecreamInfo';
 import Timer from './pages/Timer';
 import Calculator from './pages/Calculator';
 import Jsonplaceholder from './pages/Jsonplaceholder';
-import Mylistclass from './pages/Mylistclass'
+import Mylistclass from './pages/Mylistclass';
+import Chat from './pages/Chat';
+import EmailSender from './pages/EmailSender';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <Route path='/calculator' element={<Calculator/>}></Route>
         <Route path='/jsonplaceholder' element={<Jsonplaceholder/>}></Route>
         <Route path='/mylist' element={<Mylistclass/>}></Route>
+        <Route path='/chat' element={<Chat/>}></Route>
+        <Route path='/emailsender' element={<EmailSender/>} ></Route>
       </Routes>
     </BrowserRouter>
   );

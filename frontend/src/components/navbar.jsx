@@ -33,10 +33,14 @@ export function Navbar1() {
           <li className="nav-item">
             <NavLink to="/mylist" className="nav-link nav-custom2" >mylist Class</NavLink>
           </li>
-        
           <li className="nav-item">
-            <a className="nav-link disabled"  aria-disabled="true">Disabled</a>
+            <NavLink to="/chat" className="nav-link nav-custom2" >чат</NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="/emailsender" className="nav-link nav-custom2" >email</NavLink>
+          </li>
+    
+          
         </ul>
       </div>
     </div>

@@ -1,12 +1,13 @@
-import email
+
 from statistics import mode
 from tabnanny import verbose
 
 from turtle import title
 from unicodedata import category
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.db import models
+from django.db.models import SET
 
 
 # расширение user через class
@@ -168,11 +169,9 @@ class Profile(models.Model):
     )
 
     email = models.EmailField(
-        unique=True,
+        unique=False,
         editable=True,
-        blank=False,
-        null=False,
-        default="",
+        blank=True,        
         verbose_name="имэйл: ",
     )
 
@@ -192,9 +191,10 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.get_or_create(user=instance, email=instance.username)
+        # тут происходит первое создание модели
+        Profile.objects.get_or_create(user=instance)
     else:
-        Profile.objects.get_or_create(user=instance, email=instance.username)
+        Profile.objects.get_or_create(user=instance)
 
 
 
@@ -239,7 +239,25 @@ class Task(models.Model):
         return f'{self.description[:50:1]} {self.title} {self.author.username}' 
 
 
+class Message(models.Model):
+    """
+    Model for storing the message of the chat
+    """
+    sender_user = models.ForeignKey(User, related_name='sender', on_delete=SET(AnonymousUser.id))
+    receiver_user = models.ForeignKey(User, related_name='receiver', on_delete=SET(AnonymousUser.id))
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
+class Room(models.Model):
+    """
+    model for chat rooms
+    """
+    sender_user = models.ForeignKey(User, related_name='room_sender', on_delete=SET(AnonymousUser.id))
+    receiver_user = models.ForeignKey(User, related_name='room_receiver', on_delete=SET(AnonymousUser.id))
+    room_name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self) -> str:
+        return self.room_name
 
 
 

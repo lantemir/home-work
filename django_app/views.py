@@ -1,9 +1,11 @@
 # from cgitb import html
-
+import os
+from distutils.log import error
 from multiprocessing import context
 import re
+from sqlite3 import Timestamp
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
@@ -14,6 +16,12 @@ from django.core.paginator import Paginator
 from django_app import serializers
 
 from django.contrib.auth.models import User, update_last_login
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.utils.crypto import get_random_string
+
+from django_app.models import Room, Message
 
 
 
@@ -26,6 +34,15 @@ from bs4 import BeautifulSoup
 # для классов
 from django.views import View
 from rest_framework.views import APIView
+
+
+#чат
+from . forms import SignUpForm 
+from django.contrib.auth import login
+
+#Email
+import smtplib
+from email.mime.text import MIMEText
 
 # Create your views here.
 
@@ -247,6 +264,50 @@ def comment_icecream(request, icecream_id=None):
 
 
 
+
+
+@api_view(http_method_names=["GET", "POST"])
+def sendingemail(request):
+    try:
+        if request.method == "POST":
+
+            password = os.getenv("EMAIL_PASSWORD")       
+
+            localemail = "emailsenderinform@gmail.com"
+
+            sender = request.POST.get('email')
+            subject = request.POST.get('subject')
+            message = request.POST.get('message')
+
+            server = smtplib.SMTP("smtp.gmail.com", 587)
+            server.starttls()
+
+            try:
+                server.login(localemail, password)
+                msg =  MIMEText(message)
+                msg["Subject"] = subject
+               
+
+                server.sendmail(localemail, sender, msg.as_string())
+                # server.sendmail(sender, 'temiros@mail.ru', f"Subject: {sbj.as_string()}\n{msg.as_string()}")
+
+                return Response(status=status.HTTP_200_OK)
+
+                
+
+            except Exception as _ex:
+                return Response( data={"result":  f"{_ex}\nCheck login or password please"}, status=status.HTTP_400_BAD_REQUEST )
+
+
+            
+
+           
+    
+    except Exception as error:
+        return Response(status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
 @api_view(http_method_names=["GET", "POST"])
 def jsonplaceholder(request):
     try:
@@ -426,4 +487,110 @@ class Mylist(APIView):
 
 
 
-         
+# чат 
+# class GetAllUsers(LoginRequiredMixin, View):
+#     def get(self, request):
+        
+#         #to get list of all users from the database
+        
+#         print(request.user)
+#         users = User.objects.all()        
+
+#         content = {
+#             'status': status.HTTP_200_OK,             
+#             'users': users,
+#         }
+#         return Response(content)
+
+#     def post (self, request):
+
+#         # to get the sender and receiver users and connect them with their respective room
+
+#         sender = request.user.id
+#         receiver = request.POST['users']
+
+#         sender_user = User.objects.get(id = sender)
+#         receiver_user = User.objects.get(id = receiver)
+#         # settings the receiver as a session variable
+#         request.session['receiver_user'] = receiver
+
+#         #check if the sender and receiver already have a room
+#         get_room = Room.objects.filter(Q(sender_user=sender_user,
+#         receiver_user=receiver_user) | Q(sender_user=receiver_user, 
+#         receiver_user=sender_user))
+
+#         #fetch the room name if room already exist
+#         if get_room:
+#             room_name = get_room[0].room_name
+        
+#         #create a new room if room doesn't exist
+#         else:
+#             new_room = get_random_string(10)
+
+#             while True:
+#                 room_exist = Room.objects.filter(room_name=new_room)
+#                 if room_exist:
+#                     new_room = get_random_string(10)
+#                 else:
+#                     break
+#             create_room = Room.objects.create(sender_user=sender_user,
+#             receiver_user=receiver_user, room_name=new_room)
+#             create_room.save()
+#             room_name = create_room.room_name
+#         return redirect('room', room_nam=room_name)
+
+
+# class ChatRoom(LoginRequiredMixin, View):
+#     queryset = Room.objects.all()
+
+#     def get(self, request, room_name, *args, **kwargs):
+#         get_object_or_404(Room, room_name=self.kwargs.get("room_name"))
+#         room = Room.objects.get(room_name=self.kwargs.get("room_name"))
+#         sender = request.user.id
+#         sender_name = User.objects.get(id=sender).username
+
+#         # sets up the user  as sender user for chatting
+#         if room.receiver_user.id == sender:
+#             receiver = room.sender_user.id
+#         else:
+#             receiver = room.receiver_user.id
+
+#         # get all the previous messages from the database
+#         messages = Message.objects.filter(Q(sender_user=sender, 
+#         receiver_user = receiver) | Q(sender_user=receiver, 
+#         receiver_user = sender)).order_by('timestamp')
+
+        
+#         content = {
+#             'status': status.HTTP_200_OK,             
+#             'room_name': room_name,
+#             'sender_id': sender,
+#             'receiver_id': receiver,
+#             'messages': messages,
+#             'sender_name': sender_name
+#         }
+#         return Response(content)
+
+
+
+
+
+
+def frontpage(request):
+    return render(request, 'django_app/frontpage.html')
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+
+            login(request, user)
+
+            return redirect('frontpage')
+    
+    else:
+        form = SignUpForm()
+    
+    return render(request, 'django_app/signup.html', {'form': form})
