@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import s from './EmailSender.module.css';
 import axios from 'axios';
+import * as bases from '../components/bases'
 
 
 
@@ -32,6 +33,7 @@ function EmailSender() {
 
     return (
         <div>
+            <bases.Base1>
             <h1>Отправка писем</h1>
 
             <div className={s.formShow}>
@@ -46,7 +48,7 @@ function EmailSender() {
 
             </div>
 
-
+            </bases.Base1>
         </div>
     )
 }

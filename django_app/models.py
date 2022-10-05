@@ -2,7 +2,7 @@
 from statistics import mode
 from tabnanny import verbose
 
-from turtle import title
+# from turtle import title
 from unicodedata import category
 from django.utils import timezone
 from django.contrib.auth.models import User, AnonymousUser
@@ -22,6 +22,8 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver 
 
+#переопределим юзера 
+from django.contrib.auth.models import AbstractBaseUser
 
 
 
@@ -262,6 +264,16 @@ class Room(models.Model):
 
 
 
+# изменение юзера что бы поменять на имэил вместо логина
+
+class User(AbstractBaseUser):
+    name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255, unique=True)
+    password = models.CharField(max_length=255)
+    username = None
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
 
 

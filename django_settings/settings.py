@@ -104,6 +104,8 @@ MIDDLEWARE = [
 
         # AUTH_USER_MODEL = 'django_app.UserExtend' переопределение юзера через класс в моделях
 
+      
+
 ROOT_URLCONF = 'django_settings.urls'
 
 TEMPLATES = [
@@ -193,6 +195,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+
+# переопределение класса юзер jwt и email
+    # AUTH_USER_MODEL = 'django_app.User'
+
+
+
 STATIC_URL = '/static/'
 
     # раскоментить при сборке на прод и делаем:  python manage.py collectstatic --noinput
@@ -235,14 +243,14 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
-    'UPDATE_LAST_LOGIN': True,
+    'UPDATE_LAST_LOGIN': False,
 
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
+    #'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
     'AUDIENCE': None,
     'ISSUER': None,

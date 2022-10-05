@@ -44,7 +44,26 @@ from django.contrib.auth import login
 import smtplib
 from email.mime.text import MIMEText
 
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 # Create your views here.
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
 
 def index(request):
     context={}
@@ -594,3 +613,9 @@ def signup(request):
         form = SignUpForm()
     
     return render(request, 'django_app/signup.html', {'form': form})
+
+
+
+
+
+

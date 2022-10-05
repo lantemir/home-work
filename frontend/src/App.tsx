@@ -18,11 +18,20 @@ import Jsonplaceholder from './pages/Jsonplaceholder';
 import Mylistclass from './pages/Mylistclass';
 import Chat from './pages/Chat';
 import EmailSender from './pages/EmailSender';
+import Login from './pages/Login';
+import Register from './pages/Register';
+
+
+// import { AuthProvider } from './context/AuthContext'; //для токена
 
 function App() {
   return (
+
+  
     <BrowserRouter>
+    
       <Routes>
+      
         <Route path='/' element={<Home />}></Route>
         <Route path='/weather' element= {<Weather/>}></Route>
         <Route path='/icecream' element= {<Icecream/>}></Route>
@@ -33,8 +42,15 @@ function App() {
         <Route path='/mylist' element={<Mylistclass/>}></Route>
         <Route path='/chat' element={<Chat/>}></Route>
         <Route path='/emailsender' element={<EmailSender/>} ></Route>
+        <Route path='/login' element={<Login/>} ></Route>
+        <Route path='/register' element={<Register/>} ></Route>
+        
+
+     
       </Routes>
+      
     </BrowserRouter>
+   
   );
 }
 
