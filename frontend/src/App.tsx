@@ -21,6 +21,8 @@ import EmailSender from './pages/EmailSender';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
+import PictureDownload from './pages/PictureDownload';
+
 
 // import { AuthProvider } from './context/AuthContext'; //для токена
 
@@ -44,6 +46,7 @@ function App() {
         <Route path='/emailsender' element={<EmailSender/>} ></Route>
         <Route path='/login' element={<Login/>} ></Route>
         <Route path='/register' element={<Register/>} ></Route>
+        <Route path='/downloadpicture' element={<PictureDownload/>} ></Route>
         
 
      

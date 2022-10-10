@@ -64,8 +64,7 @@ export function Navbar1() {
             <li className="nav-item">
             <NavLink to="/register" className="nav-link nav-custom2" >регистрация</NavLink>
             </li>
-           </div>
-         
+           </div>         
           }
           {/* <li className="nav-item">
             <NavLink to="/login" className="nav-link nav-custom2" >логин</NavLink>
@@ -73,7 +72,10 @@ export function Navbar1() {
           {/* <li className="nav-item">
             <NavLink to="/register" className="nav-link nav-custom2" >регистрация</NavLink>
           </li> */}
-    
+
+          <li className="nav-item">
+            <NavLink to="/downloadpicture" className="nav-link nav-custom2" >Скачиваем картинки</NavLink>
+          </li>
           
         </ul>
       </div>

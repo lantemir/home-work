@@ -41,6 +41,8 @@ urlpatterns = [
 
     re_path(route=r'^sendemail/$', view=views.sendingemail, name="sendingemail"),
 
+    path('download_img/', view=views.download_img, name='download_img')
+
     # path('frontpage/', views.frontpage, name='frontpage'),
     # path('signup/', views.signup, name='signup'),
     # path('login/', auth_views.LoginView.as_view(template_name = 'django_app/login.html'), name='login' ),
@@ -52,6 +54,5 @@ urlpatterns = [
 
     
 ]
-
 
 

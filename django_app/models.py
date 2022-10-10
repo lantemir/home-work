@@ -87,6 +87,9 @@ class IcecreamCategory(models.Model):
     def __str__(self) -> str:
         return f'{self.title}'
 
+    def test_get_title(self):
+        return self.title
+
 
 class Icecream(models.Model):
     title = models.CharField(

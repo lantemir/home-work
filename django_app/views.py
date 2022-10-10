@@ -4,6 +4,7 @@ from distutils.log import error
 from multiprocessing import context
 import re
 from sqlite3 import Timestamp
+from urllib import response
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
@@ -47,6 +48,8 @@ from email.mime.text import MIMEText
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+
 
 # Create your views here.
 
@@ -616,6 +619,42 @@ def signup(request):
 
 
 
+@api_view(http_method_names=["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def download_img(request):
+
+    url_photo = request.data.get('url')
+    url_video = request.data.get('urlvideo')
+
+    
+
+    print("django url")
+    print(url_photo)
+          
+
+    try:
+        if url_photo:
+            response = requests.get(url=url_photo)
+
+            with open ('req_img.jpg', 'wb') as file:
+                file.write(response.content)
+            
+            return Response(data={"result":  url_photo}, status=status.HTTP_200_OK)
+
+        elif url_video:
+            response = requests.get(url=url_video, stream=True)
+
+            with open('req_video.mp4', 'wb') as file:
+                for chunk in response.iter_content(chunk_size=1024*1024):
+                    if chunk:
+                        file.write(chunk)
+            
+            return Response(data={"result":  url_video}, status=status.HTTP_200_OK)
+        
+
+    except Exception as _ex:
+        return 'оопс проверьте url! '
 
 
 
+    
