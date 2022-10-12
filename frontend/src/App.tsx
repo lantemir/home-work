@@ -22,6 +22,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 
 import PictureDownload from './pages/PictureDownload';
+import CeleryRedis from './pages/Celery';
 
 
 // import { AuthProvider } from './context/AuthContext'; //для токена
@@ -47,7 +48,7 @@ function App() {
         <Route path='/login' element={<Login/>} ></Route>
         <Route path='/register' element={<Register/>} ></Route>
         <Route path='/downloadpicture' element={<PictureDownload/>} ></Route>
-        
+        <Route path='/celerytest' element={<CeleryRedis/>} ></Route>      
 
      
       </Routes>

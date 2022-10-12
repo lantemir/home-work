@@ -41,7 +41,12 @@ urlpatterns = [
 
     re_path(route=r'^sendemail/$', view=views.sendingemail, name="sendingemail"),
 
-    path('download_img/', view=views.download_img, name='download_img')
+    path('download_img/', view=views.download_img, name='download_img'),
+
+    path('seleryredis/', view=views.seleryredis, name='seleryredis'),
+
+
+    
 
     # path('frontpage/', views.frontpage, name='frontpage'),
     # path('signup/', views.signup, name='signup'),

@@ -76,6 +76,9 @@ export function Navbar1() {
           <li className="nav-item">
             <NavLink to="/downloadpicture" className="nav-link nav-custom2" >Скачиваем картинки</NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="/celerytest" className="nav-link nav-custom2" >Celery Redis</NavLink>
+          </li>
           
         </ul>
       </div>

@@ -1,4 +1,5 @@
 # from cgitb import html
+from multiprocessing.pool import AsyncResult
 import os
 from distutils.log import error
 from multiprocessing import context
@@ -49,6 +50,12 @@ from email.mime.text import MIMEText
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+
+#celery redis
+from django_app import celery as current_celery_file
+from django_app.tasks import send_feedback_email_task
+from django_settings.celery import app as celery_app
+#celery_file.debug_task()
 
 
 # Create your views here.
@@ -619,6 +626,10 @@ def signup(request):
 
 
 
+
+
+
+
 @api_view(http_method_names=["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def download_img(request):
@@ -657,4 +668,58 @@ def download_img(request):
 
 
 
+
+
+
+@api_view(http_method_names=["GET", "POST"])
+@permission_classes([AllowAny])
+def celery_test(request):
+
+#    current_celery_file.count_users()
+
+    send_feedback_email_task.delay("email@com.ru" "Hello world")
+
+        #     python -m celery -A django_settings worker -l info   с консоли
+     
+
+    return Response(data={"result":  "ok"}, status=status.HTTP_200_OK)
+
+
+
+
+@api_view(http_method_names=["GET", "POST"])
+@permission_classes([AllowAny])
+def seleryredis(request):
+    try:
+        if request.method == "POST":
+
+            # password = os.getenv("EMAIL_PASSWORD")       
+
+           # localemail = "emailsenderinform@gmail.com"
+
+            sender = request.POST.get('email')
+            subject = request.POST.get('subject')
+            message = request.POST.get('message')
+
+            # server = smtplib.SMTP("smtp.gmail.com", 587)
+            # server.starttls()
+
+            task_id= send_feedback_email_task.delay(sender, subject, message )
+
+            
+            result = AsyncResult(task_id, app = celery_app )
+
+            if result.state != "PENDING":
+                result = f"status: {result.state} | result: {result.get()}"
+            else:
+                result = f"status: {result.state} | result: {None}"
+
+            print( result) # 'SUCCESS'
+            # print(task_id.get()) #7
+
+            return Response( data={"task_id": task_id, "result": result } , status=status.HTTP_200_OK)    
+
+           
     
+    except Exception as error:
+        return Response(status = status.HTTP_500_INTERNAL_SERVER_ERROR)
